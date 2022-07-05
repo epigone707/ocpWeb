@@ -1,0 +1,16 @@
+.navbar {
+    font-family: 'Josefin Sans';
+    font-size: 20px;
+}
+
+p {
+    font-size: 20px;
+}
+
+
+.container { 
+    width: 70%;
+    position:relative; 
+    top: 100px;
+    font-family: 'Josefin Sans';
+  }
