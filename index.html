@@ -55,7 +55,8 @@
     <div class="container">
 
       <h1>Intro</h1>
-      <p>This is an online </p>
+      <p>This is an online tool that use pre-trained machine learning models to predict the molecular adsorption energy
+        and force.</p>
       <video id="video" width="40%" class="center" onclick="play();">
         <source src="assets/system.mp4" type="video/mp4" />
       </video>
@@ -79,17 +80,24 @@
 
       <h2>Step 2: Upload the atom structure of catalyst</h2>
       <p>We support CIF (Crystallographic Information File) format. You can generate CIF file from <a
-          href="https://materialsproject.org/apps">Material
-          Project</a>. Here is a <a href="https://www.youtube.com/watch?v=EF2ebivVCJg">tutorial video</a>.</p>
+          href="https://materialsproject.org/materials">Material
+          Project</a>. First, search
+        for materials information by chemistry, composition, or property. Here we search for "Cu".
+        <img src="assets/screenshot_-1.png" width="70%" class="center">
+        Then, pick the matertial you want in the matching search results. Here we pick the first one with ID mp-30.
+        <img src="assets/screenshot_0.png" width="70%" class="center">
+        Export the material sturcture as CIF and upload it.
+        <img src="assets/screenshot_1.png" width="70%" class="center">
+      </p>
       <input type="file" class="form-control" id="customFile" />
       </br>
 
-      <h2>Step 3: Enter the formula of adsorbate</h2>
+      <!-- <h2>Step 3: Enter the formula of adsorbate</h2>
       For example, C3H8.
       <input class="form-control form-control-lg" type="text" placeholder="adsorbate">
-      </br>
+      </br> -->
 
-      <h2>Step 4: Predict the energy and force</h2>
+      <h2>Step 3: Predict the energy and force</h2>
       <button class="btn btn-primary">Predict</button>
     </div>
 
