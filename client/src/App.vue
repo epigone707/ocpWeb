@@ -1,6 +1,6 @@
+<!-- eslint-disable max-len -->
 <template>
   <div id="app">
-    <h1>HI</h1>
     <router-view/>
   </div>
 </template>
