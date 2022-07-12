@@ -15,7 +15,7 @@ To test the back end, point your browser at http://localhost:5000/ping. You shou
 
 If you want to kill the server, press Ctrl+C.
 
-Fire up the development server:
+Then, open a new terminal and fire up the development server:
 ```
 $ cd client
 $ npm run serve
