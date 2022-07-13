@@ -30,7 +30,7 @@
     <h1>Intro</h1>
     <p>This is an online tool that use pre-trained machine learning models to predict the molecular adsorption
       energy
-      and force.</p>
+      and per-atom forces.</p>
     <video id="video" width="40%" class="center" onclick="play();">
       <source src="../assets/system.mp4" type="video/mp4" />
     </video>
@@ -70,6 +70,12 @@
 
     <h2>Step 3: Predict the energy and force</h2>
     <button class="btn btn-primary" v-on:click="getPredict()">Predict</button>
+    <p>{{results.text}}</p>
+    <p>energy: {{results.energy}}, force: {{results.force}}, MAE:{{results.MAE}}</p>
+    <br>
+    <br>
+    <br>
+
   </div>
 </template>
 
@@ -78,8 +84,15 @@ import axios from 'axios';
 
 export default {
   name: 'Home-page',
+
   data() {
     return {
+      results: {
+        text: 'Click the "predict" button to show the result.',
+        MAE: 'N/A',
+        energy: 'N/A',
+        force: 'N/A',
+      },
       file: '',
       msg: '',
       navBarTextsBadges: [['Home', '/'], ['Help', 'help']],
@@ -118,9 +131,14 @@ export default {
       ).then((response) => {
         console.log('SUCCESS!!');
         console.log(response);
+        this.results.text = 'Predicted Results:';
+        this.results.MAE = response.data.MAE;
+        this.results.energy = response.data.energy;
+        this.results.force = response.data.force;
       })
-        .catch(() => {
+        .catch((error) => {
           console.log('FAILURE!!');
+          console.log(error);
         });
     },
 
