@@ -7,7 +7,7 @@
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark" style='background-color:#001d64'>
       <div class="container-fluid">
         <a class="navbar-brand" href="/">
-          <img src="../assets/CataML450-logos_white.png" class="d-inline-block" style='object-fit:cover;height:40px'
+          <img src="../assets/CataML450-logos_white.png" class="d-inline-block" style='object-fit:cover;height:50px'
             alt="">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
@@ -38,9 +38,9 @@
     <h2>Step 1: Choose the category of your catalyst</h2>
     <p>Traditional methods all focus on training a general model across all types of catalyst. However, considering
       the fact that catalyst with similar types or combinations of certain atoms tend to have similar chemical
-      characteristics, we use clustering to partition the metallic catalyst into 5 subgroups, and apply separate
+      characteristics, we use clustering to partition the metallic catalyst into 2 subgroups, and apply separate
       gemnet models for each group respectively.</p>
-    <img src="../assets/catalyst categories.jpg" width="70%" class="center">
+    <!-- <img src="../assets/catalyst categories.jpg" width="70%" class="center"> -->
     <p>Category: {{ selected.text }}</p>
     <select class="form-select" aria-label="Default select example" v-model="selected">
       <option v-for="(product, index) in products" v-bind:key=index
@@ -71,7 +71,16 @@
     <h2>Step 3: Predict the energy and force</h2>
     <button class="btn btn-primary" v-on:click="getPredict()">Predict</button>
     <p>{{results.text}}</p>
-    <p>energy: {{results.energy}}, force: {{results.force}}, MAE:{{results.MAE}}</p>
+    <div v-if="results.MAE_energy != 'N/A'">
+    <p>
+    Relaxed energy: {{results.energy}},
+    Force: {{results.force}},
+    MAE of relaxed energy:{{results.MAE_energy}},
+    MAE of force:{{results.MAE_force}}</p>
+    Visualization: <img :src="results.img_1" alt="" width="50" height="60" />
+
+    </div>
+
     <br>
     <br>
     <br>
@@ -89,9 +98,11 @@ export default {
     return {
       results: {
         text: 'Click the "predict" button to show the result.',
-        MAE: 'N/A',
+        MAE_energy: 'N/A',
+        MAE_force: 'N/A',
         energy: 'N/A',
         force: 'N/A',
+        img_1: '',
       },
       file: '',
       msg: '',
@@ -100,11 +111,8 @@ export default {
       selected: '',
       products: [
         { id: 0, name: 'All (default)' },
-        { id: 1, name: 'Pure metals' },
-        { id: 2, name: 'Multi-metallic (1-3 metals)' },
-        { id: 3, name: 'Intermetallic (ordered multimetallic)' },
-        { id: 4, name: 'Overlayer (thin layers of metal applied to the surface)' },
-        { id: 5, name: 'High-entropy (more than 3 metals)' },
+        { id: 1, name: 'Metallic' },
+        { id: 2, name: 'Non-metallic' },
       ],
     };
   },
@@ -132,9 +140,11 @@ export default {
         console.log('SUCCESS!!');
         console.log(response);
         this.results.text = 'Predicted Results:';
-        this.results.MAE = response.data.MAE;
+        this.results.MAE_energy = response.data.MAE_energy;
+        this.results.MAE_force = response.data.MAE_force;
         this.results.energy = response.data.energy;
         this.results.force = response.data.force;
+        this.results.img_1 = response.data.img_1;
       })
         .catch((error) => {
           console.log('FAILURE!!');

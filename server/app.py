@@ -4,6 +4,8 @@ from flask import Flask, jsonify, request
 import os
 from flask import flash, redirect, url_for
 from werkzeug.utils import secure_filename
+from flask import send_from_directory, render_template
+from loadModel import load_cif
 
 # for testing
 BOOKS = [
@@ -71,6 +73,11 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+@app.route('/uploads/<path:path>')
+def send_files(path):
+    print("send_report!!!!!!!!!!!!!!!")
+    return send_from_directory('uploads', path)
+
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
     if request.method == 'POST':
@@ -89,16 +96,19 @@ def predict():
             file.save(os.path.join('server/uploads/', filename))
             data = dict(request.form)
             print("post_data:",data)
-
-            
             # TODO: run the pre-trained machine learning model
-            return jsonify({
-                
+            visual_filename = load_cif(filename)
+            
+
+            context = {
                 'status': 'success',
                 'energy': 43,
                 'force': 2,
-                'MAE': 0.3
-            })
+                'MAE': 0.3,
+                'img_1': "http://localhost:5000/uploads/{}".format(visual_filename),
+            }
+            
+            return jsonify(**context)
     else:
         return jsonify({
             'status': 'test',
