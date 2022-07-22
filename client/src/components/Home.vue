@@ -16,8 +16,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-link" :class="{ active: idx == navBarSelected }" v-for="x, idx of navBarTextsBadges" :key="idx"
-              :href="x[1]">{{ x[0] }}
+            <a class="nav-link" :class="{ active: idx == navBarSelected }" v-for="x, idx of navBarTextsBadges"
+              :key="idx" :href="x[1]">{{ x[0] }}
             </a>
             <a class="nav-link" target="_blank" href='https://opencatalystproject.org/'>OCP<i
                 class="fa fa-external-link"></i>
@@ -48,20 +48,96 @@
       </option>
     </select>
 
-    <h2>Step 2: Upload the atom structure of catalyst</h2>
-    <p>We support CIF (Crystallographic Information File) format. You can generate CIF file from <a
-        href="https://materialsproject.org/materials">Material
-        Project</a>. First, search
-      for materials information by chemistry, composition, or property. Here we search for "Cu".
-      <img src="../assets/screenshot_-1.png" width="70%" class="center">
-      Then, pick the matertial you want in the matching search results. Here we pick the first one with ID mp-30.
-      <img src="../assets/screenshot_0.png" width="70%" class="center">
-      Export the material sturcture as CIF and upload it.
-      <img src="../assets/screenshot_1.png" width="70%" class="center">
+    <h2>Step 2: Upload the atoms structure of catalyst</h2>
+    <p>We support extxyz format. Below is a valid extxyz file. Don't worry, we will teach you the meaning of each line
+      so that you can design the extxyz file on your own!
     </p>
-    <label>CIF File:
-        <input type="file" @change="handleFileUpload( $event )"/>
-      </label>
+    <pre>
+<!--code Tag starts here -->
+      <code>71
+Lattice="9.18446134 0.0 0.0 0.0 22.63986204 -4.15391219 0.0 0.0 29.07738533" Properties=species:S:1:pos:R:3:move_mask:L:1:tags:I:1 pbc="T T T"
+Ca       0.00000000       1.59977838      13.75983413  F        0
+Ca       0.00000000      12.91970940       9.60592198  F        0
+Ca       2.29611534       4.05467998      11.68287816  F        0
+Ca       2.29611534      15.37461100      11.68287812  F        0
+Ca       0.00000000       7.25974389      11.68287791  F        0
+Ca       0.00000000      18.57967491       7.52896576  F        0
+Ca       2.29611534       9.71464549       9.60592194  F        0
+Ca       2.29611534      21.03457651       9.60592190  F        0
+Ca       9.17763995       1.59095314      17.69283799  T        1
+Ca       0.00000000      12.91970940      13.75983409  F        0
+Ca       2.29611534       4.05467998      15.83679027  F        0
+Ca       2.29066491      15.28372395      15.68350401  T        1
+Ca       9.18348026       7.34652543      15.63808273  T        1
+Ca       0.00000000      18.57967491      11.68287816  F        0
+Ca       2.29611534       9.71464549      13.75983405  F        0
+Ca       2.54997008      20.99736767      13.92455556  T        1
+Ca       4.59223067       1.59977838      13.75983413  F        0
+Ca       4.59223067      12.91970940       9.60592198  F        0
+Ca       6.88834601       4.05467998      11.68287816  F        0
+Ca       6.88834601      15.37461100      11.68287812  F        0
+Ca       4.59223067       7.25974389      11.68287791  F        0
+Ca       4.59223067      18.57967491       7.52896576  F        0
+Ca       6.88834601       9.71464549       9.60592194  F        0
+Ca       6.88834601      21.03457651       9.60592190  F        0
+Ca       4.58193103       1.46827135      17.85365541  T        1
+Ca       4.59223067      12.91970940      13.75983409  F        0
+Ca       6.88834601       4.05467998      15.83679027  F        0
+Ca       6.88545014      15.25889504      15.65682260  T        1
+Ca       4.59315922       7.34715006      15.63644330  T        1
+Ca       4.59223067      18.57967491      11.68287816  F        0
+Ca       6.88834601       9.71464549      13.75983405  F        0
+Ca       6.61873210      21.03855048      13.78417394  T        1
+Cu       2.29611534       0.77843498      11.68287816  F        0
+Cu       2.29611534      12.09836600      11.68287812  F        0
+Cu       2.29611534       6.43840049       9.60592194  F        0
+Cu       2.29611534      17.75833151       9.60592190  F        0
+Cu       2.29611534       0.77843498      15.83679027  F        0
+Cu       2.29701918      12.15035075      15.62754869  T        1
+Cu       2.29611534       6.43840049      13.75983405  F        0
+Cu       2.32833957      17.85936620      13.98529752  T        1
+Cu       6.88834601       0.77843498      11.68287816  F        0
+Cu       6.88834601      12.09836600      11.68287812  F        0
+Cu       6.88834601       6.43840049       9.60592194  F        0
+Cu       6.88834601      17.75833151       9.60592190  F        0
+Cu       6.88834601       0.77843498      15.83679027  F        0
+Cu       6.88928190      12.13354857      15.62561480  T        1
+Cu       6.88834601       6.43840049      13.75983405  F        0
+Cu       6.87812517      17.71723110      13.65923797  T        1
+Ag       0.00000000       4.88703790       9.60592198  F        0
+Ag       0.00000000      16.20696892       9.60592194  F        0
+Ag       0.00000000      10.54700341      11.68287787  F        0
+Ag       0.00000000      21.86693443       7.52896572  F        0
+Ag       0.00000000       4.88703790      13.75983409  F        0
+Ag       0.01753167      16.23838218      13.82017581  T        1
+Ag       0.00680367      10.61766016      15.85136871  T        1
+Ag       0.00000000      21.86693443      11.68287812  F        0
+Ag       4.59223067       4.88703790       9.60592198  F        0
+Ag       4.59223067      16.20696892       9.60592194  F        0
+Ag       4.59223067      10.54700341      11.68287787  F        0
+Ag       4.59223067      21.86693443       7.52896572  F        0
+Ag       4.59223067       4.88703790      13.75983409  F        0
+Ag       4.57866733      16.22220623      13.82969226  T        1
+Ag       4.58642150      10.61732735      15.85150247  T        1
+Ag       4.59223067      21.86693443      11.68287812  F        0
+C        1.30185946      19.36114296      16.43787420  T        2
+C        2.36653517      18.99328301      15.66234078  T        2
+H        1.39650304      19.70137209      17.48632911  T        2
+H        0.26855034      19.29583420      16.06379907  T        2
+H        4.62397042      22.04645541      15.86336363  T        2
+H        3.34254960      19.08643970      16.18832954  T        2
+O        4.61136328      22.03688418      14.88235297  T        2
+      </code>
+    </pre>
+    <p>
+      The first step is to create a txt file. After you finish writing all information of your catalyst into this txt
+      file, you can change the file extension from txt to extxyz and upload it.
+      The first line "71" means there're 71 atoms in this catalyst molecule.
+      TODO
+    </p>
+    <label> Uploud your extxyz File:
+      <input type="file" @change="handleFileUpload($event)" />
+    </label>
 
     <!-- <h2>Step 3: Enter the formula of adsorbate</h2>
       For example, C3H8.
@@ -69,15 +145,33 @@
       </br> -->
 
     <h2>Step 3: Predict the energy and force</h2>
+    <p>Please be patient, we may need 1-2 minutes to generate the results.</p>
     <button class="btn btn-primary" v-on:click="getPredict()">Predict</button>
-    <p>{{results.text}}</p>
+    <p>{{ results.text }}</p>
     <div v-if="results.MAE_energy != 'N/A'">
-    <p>
-    Relaxed energy: {{results.energy}},
-    Force: {{results.force}},
-    MAE of relaxed energy:{{results.MAE_energy}},
-    MAE of force:{{results.MAE_force}}</p>
-    Visualization: <img :src="results.img_1" alt="" width="50" height="60" />
+      <p>
+        Relaxed Energy: {{ results.energy }} (Unit: eV)
+      </p>
+      <p>Per-atom Forces:(Unite: eV/å)</p>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Atom Index</th>
+            <th>Force(x direction)</th>
+            <th>Force(y direction)</th>
+            <th>Force(z direction)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, i) in results.force" :key="i">
+            <th scope="row">{{ i }}</th>
+            <td>{{ item[0] }}</td>
+            <td>{{ item[1] }}</td>
+            <td>{{ item[2] }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- Visualization: <img :src="results.img_1" alt="" width="50" height="60" /> -->
 
     </div>
 
@@ -98,10 +192,9 @@ export default {
     return {
       results: {
         text: 'Click the "predict" button to show the result.',
-        MAE_energy: 'N/A',
-        MAE_force: 'N/A',
         energy: 'N/A',
-        force: 'N/A',
+        force: ['N/A'],
+        plain_force: '',
         img_1: '',
       },
       file: '',
@@ -126,6 +219,8 @@ export default {
       formData.append('id', 'hi!');
       const path = 'http://localhost:5000/predict';
       console.log('getPredict');
+      this.results.energy = 'Loading...';
+      this.results.force = ['Loading...'];
       axios.post(
         path,
         formData,
@@ -140,11 +235,14 @@ export default {
         console.log('SUCCESS!!');
         console.log(response);
         this.results.text = 'Predicted Results:';
-        this.results.MAE_energy = response.data.MAE_energy;
-        this.results.MAE_force = response.data.MAE_force;
         this.results.energy = response.data.energy;
         this.results.force = response.data.force;
         this.results.img_1 = response.data.img_1;
+        // let _jsonString = "";
+        // for (var key in this.results.force) {
+        //   _jsonString += "key " + key + " value " + x[key] + '</br>';
+        // }
+        // this.results.plain_force = response.data.plain_force;
       })
         .catch((error) => {
           console.log('FAILURE!!');
@@ -165,6 +263,13 @@ export default {
 .navbar {
   font-family: 'Josefin Sans';
   font-size: 20px;
+}
+
+pre code {
+  background-color: #eee;
+  border: 1px solid #999;
+  display: block;
+  padding: 20px;
 }
 
 .container {
