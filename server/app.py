@@ -11,7 +11,8 @@ from loadModel import load_cif
 import os, sys
 sys.path.append("/home/litianyi/ocp")
 
-from ve450_predict import model_predict
+
+# from ve450_predict import model_predict
 
 # for testing
 BOOKS = [
@@ -105,8 +106,10 @@ def predict():
             data = dict(request.form)
             print("post_data:",data)
             # run the pre-trained machine learning model
+            res_energy = None
+            res_forces = None
 
-            res_energy, res_forces = model_predict(test_src = "/home/litianyi/ocp/test_data",test_src_name = abs_path, checkpoint_path = "/home/litianyi/ocp/checkpoints/gemnet_oc_base_s2ef_all.pt",base_yml = "/home/litianyi/ocp/configs/s2ef/all/base.yml", gemnet_yml = "/home/litianyi/ocp/configs/s2ef/all/gemnet/gemnet-oc.yml")
+            # res_energy, res_forces = model_predict(test_src = "/home/litianyi/ocp/test_data",test_src_name = abs_path, checkpoint_path = "/home/litianyi/ocp/checkpoints/gemnet_oc_base_s2ef_all.pt",base_yml = "/home/litianyi/ocp/configs/s2ef/all/base.yml", gemnet_yml = "/home/litianyi/ocp/configs/s2ef/all/gemnet/gemnet-oc.yml")
             plain_force = ""
             # for force in res_forces:
             #     plain_force +=  str(force) 
@@ -123,7 +126,7 @@ def predict():
     else:
         return jsonify({
             'status': 'test',
-            'energy': "TEST",
+            'energy': "Please Uploud Your extxyz File",
             'force':  "TEST",
             'MAE':  "TEST",
         })

@@ -29,14 +29,13 @@
 
     <h1>Intro</h1>
     <p>This is an online tool that use pre-trained machine learning models to predict the molecular adsorption
-      energy
-      and per-atom forces.</p>
+      energy, relaxed energy and per-atom forces.</p>
     <video id="video" width="40%" class="center" onclick="play();">
       <source src="../assets/system.mp4" type="video/mp4" />
     </video>
 
     <h2>Step 1: Choose the category of your catalyst</h2>
-    <p>Traditional methods all focus on training a general model across all types of catalyst. However, considering
+    <p>Traditional methods focus on training a general model across all types of catalyst. However, considering
       the fact that catalyst with similar types or combinations of certain atoms tend to have similar chemical
       characteristics, we use clustering to partition the metallic catalyst into 2 subgroups, and apply separate
       gemnet models for each group respectively.</p>
@@ -49,12 +48,19 @@
     </select>
 
     <h2>Step 2: Upload the atoms structure of catalyst</h2>
-    <p>We support extxyz format. Below is a valid extxyz file. Don't worry, we will teach you the meaning of each line
-      so that you can design the extxyz file on your own!
+    <p>We support <a
+        href="https://web.archive.org/web/20190811094343/https://libatoms.github.io/QUIP/io.html#extendedxyz">extended
+        XYZ (a.k.a. extxyz) format</a>. Extended XYZ format is an enhanced version of the <a
+        href="http://en.wikipedia.org/wiki/XYZ_file_format">basic XYZ format</a>
+      that allows extra columns to be present in the file for additonal per-atom properties as
+      well as standardising the format of the comment line to include the
+      cell lattice and other per-frame parameters.</p>
+    <p>It's easiest to describe the format with an example. Below is a extxyz file example, which is a valid input to
+      our back-end
+      ML models. Don't worry, we will teach you the meaning of each line
+      so that you can design the catalyst and adsorbate molecules on your own!
     </p>
-    <pre>
-<!--code Tag starts here -->
-      <code>71
+    <pre><code>71
 Lattice="9.18446134 0.0 0.0 0.0 22.63986204 -4.15391219 0.0 0.0 29.07738533" Properties=species:S:1:pos:R:3:move_mask:L:1:tags:I:1 pbc="T T T"
 Ca       0.00000000       1.59977838      13.75983413  F        0
 Ca       0.00000000      12.91970940       9.60592198  F        0
@@ -126,33 +132,74 @@ H        1.39650304      19.70137209      17.48632911  T        2
 H        0.26855034      19.29583420      16.06379907  T        2
 H        4.62397042      22.04645541      15.86336363  T        2
 H        3.34254960      19.08643970      16.18832954  T        2
-O        4.61136328      22.03688418      14.88235297  T        2
-      </code>
-    </pre>
-    <p>
-      The first step is to create a txt file. After you finish writing all information of your catalyst into this txt
-      file, you can change the file extension from txt to extxyz and upload it.
-      The first line "71" means there're 71 atoms in this catalyst molecule.
-      TODO
+O        4.61136328      22.03688418      14.88235297  T        2</code></pre>
+    <p>The first line is the number of atoms. In the example, "71" means there're totally 71 atoms in the catalyst
+      molecule and adsobate molecule.</p>
+    <p>The second line is a series of
+      key/value pairs. The keys should be strings and values can be
+      integers, reals, bools (denoted by <code>T</code> and <code>F</code> for true and false)
+      or strings. Quotes are required if a value contains any spaces (like
+      <code>Lattice</code> above).
     </p>
-    <label> Uploud your extxyz File:
+
+    <p>There are two mandatory parameters: <code>Lattice</code> and <code>Properties</code>.</p>
+    <p>
+      <code>Lattice</code> is a Cartesian 3x3 matrix representation of the cell
+      vectors, with each vector stored as a column and the 9 values listed in
+      Fortran column-major order, i.e. in the form :
+    </p>
+    <pre><code>Lattice=&quot;R1x R1y R1z R2x R2y R2z R3x R3y R3z&quot;</code></pre>
+    <p>
+      where <code>R1x R1y R1z</code> are the Cartesian x-, y- and z-components of the
+      first lattice vector, <code>R2x R2y R2z</code> those of the second
+      lattice vector and <code>R3x R3y R3z</code> are those of the
+      third lattice vector.</p>
+
+    <p>
+      The list of properties in the file is described by the <code>Properties</code>
+      parameter, which should take the form of a series of colon separated
+      triplets giving the name, format (<code>S</code> for string, <code>R</code> for real number, <code>L</code> for
+      bool, <code>I</code> for integer) and
+      number of columns of each property. For example:</p>
+    <pre><code>Properties=species:S:1:pos:R:3:move_mask:L:1:tags:I:1 pbc="T T T"</code></pre>
+    <p>
+      indicates the first column represents atomic species, the next three
+      columns represent atomic positions, the next one column defines whether you want to mask the atom, and the
+      last column is an single integer called <code>tags</code>. If the atom is in the catalyst and below surface,
+      <code>tags</code> should be set to 0. If the atom is on the catalyst surface, set to 1. If the atom is adsorbate,
+      set to 2. Since we only want the predicted forces for surface atoms (<code>tags=1</code>) and adsorbate atoms
+      (<code>tags=2</code>), we set their
+      <code>move_mask</code> to be <code>T</code> (True).
+    </p>
+    <p>According to <a href="https://github.com/Open-Catalyst-Project/ocp">OCP instructions</a>, we don't need
+      to care about <code>pbc</code>, just simply set it to <code>"T T T"</code>.
+
+    </p>
+    <p>
+      With this property definition, the line :
+    </p>
+    <pre><code>Ca       0.00000000       1.59977838      13.75983413  F        0</code></pre>
+    <p>
+      would describe a calcium atom at position (0.00000000, 1.59977838, 13.75983413) and it is under the catalyst
+      surface.</p>
+    <br>
+    <p>Now you can create a txt file, type in your catalyst and adsorbate data as above, and change the
+      file extension from txt to extxyz.</p>
+    <p>Uploud your extxyz file:</p>
+    <label>
       <input type="file" @change="handleFileUpload($event)" />
     </label>
 
-    <!-- <h2>Step 3: Enter the formula of adsorbate</h2>
-      For example, C3H8.
-      <input class="form-control form-control-lg" type="text" placeholder="adsorbate">
-      </br> -->
-
-    <h2>Step 3: Predict the energy and force</h2>
-    <p>Please be patient, we may need 1-2 minutes to generate the results.</p>
+    <h2>Step 3: Predict the energy and forcea</h2>
+    <p>Please be patient, it may take 1-2 minutes to generate the results. Note that we will only show the forces result
+      of those atoms that you set <code>move_mask</code> to be <code>T</code></p>
     <button class="btn btn-primary" v-on:click="getPredict()">Predict</button>
     <p>{{ results.text }}</p>
     <div v-if="results.MAE_energy != 'N/A'">
       <p>
         Relaxed Energy: {{ results.energy }} (Unit: eV)
       </p>
-      <p>Per-atom Forces:(Unite: eV/å)</p>
+      <p>Per-atom Forces: (Unite: eV/å)</p>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -171,6 +218,9 @@ O        4.61136328      22.03688418      14.88235297  T        2
           </tr>
         </tbody>
       </table>
+      <p>
+        MAE: {{ results.MAE }} (Unit: eV)
+      </p>
       <!-- Visualization: <img :src="results.img_1" alt="" width="50" height="60" /> -->
 
     </div>
@@ -193,9 +243,10 @@ export default {
       results: {
         text: 'Click the "predict" button to show the result.',
         energy: 'N/A',
-        force: ['N/A'],
+        force: [['N/A', 'N/A', 'N/A']],
         plain_force: '',
         img_1: '',
+        MAE: 'N/A',
       },
       file: '',
       msg: '',
@@ -267,9 +318,12 @@ export default {
 
 pre code {
   background-color: #eee;
-  border: 1px solid #999;
   display: block;
-  padding: 20px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-radius: 5px;
 }
 
 .container {
