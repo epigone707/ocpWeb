@@ -6,13 +6,13 @@ import os
 from flask import flash, redirect, url_for
 from werkzeug.utils import secure_filename
 from flask import send_from_directory, render_template
-from loadModel import load_cif
+from loadModel import visualize_extxyz
 
 import os, sys
 sys.path.append("/home/litianyi/ocp")
 
-
-# from ve450_predict import model_predict
+# TODO
+from ve450_predict import model_predict
 
 # for testing
 BOOKS = [
@@ -43,7 +43,7 @@ app.config.from_object(__name__)
 
 
 UPLOAD_FOLDER = 'server/uploads'
-ALLOWED_EXTENSIONS = set(['txt', 'cif','extxyz'])
+ALLOWED_EXTENSIONS = set(['txt','extxyz'])
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -58,8 +58,6 @@ def ping_pong():
     return jsonify('pong!')
 
 # for testing
-
-
 @app.route('/books', methods=['GET', 'POST'])
 def all_books():
     response_object = {'status': 'success'}
@@ -82,7 +80,7 @@ def allowed_file(filename):
 
 @app.route('/uploads/<path:path>')
 def send_files(path):
-    print("send_report!!!!!!!!!!!!!!!")
+    print("send file!")
     return send_from_directory('uploads', path)
 
 @app.route('/predict', methods=['GET', 'POST'])
@@ -108,18 +106,16 @@ def predict():
             # run the pre-trained machine learning model
             res_energy = None
             res_forces = None
+            visual_filename = visualize_extxyz(filename)
 
-            # res_energy, res_forces = model_predict(test_src = "/home/litianyi/ocp/test_data",test_src_name = abs_path, checkpoint_path = "/home/litianyi/ocp/checkpoints/gemnet_oc_base_s2ef_all.pt",base_yml = "/home/litianyi/ocp/configs/s2ef/all/base.yml", gemnet_yml = "/home/litianyi/ocp/configs/s2ef/all/gemnet/gemnet-oc.yml")
-            plain_force = ""
-            # for force in res_forces:
-            #     plain_force +=  str(force) 
+            # TODO
+            res_energy, res_forces = model_predict(test_src = "/home/litianyi/ocp/test_data",test_src_name = abs_path, checkpoint_path = "/home/litianyi/ocp/checkpoints/gemnet_oc_base_s2ef_all.pt",base_yml = "/home/litianyi/ocp/configs/s2ef/all/base.yml", gemnet_yml = "/home/litianyi/ocp/configs/s2ef/all/gemnet/gemnet-oc.yml")
 
             context = {
                 'status': 'success',
                 'energy': res_energy,
                 'force': res_forces,
-                # 'plain_force': plain_force,
-                # 'img_1': "http://localhost:5000/uploads/{}".format(visual_filename),
+                'img_1': "http://localhost:5000/uploads/{}".format(visual_filename),
             }
             
             return jsonify(**context)
