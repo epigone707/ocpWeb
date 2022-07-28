@@ -34,21 +34,33 @@ To test, navigate to http://localhost:8080 in the browser. You should see the ho
 
 ## deploy to AWS
 
+ssh to your aws ec2 instance, git clone this repo and switch to branch aws.
+
+Open `/etc/nginx/sites-available/default` to edit the file.
+```
+$ sudo nano /etc/nginx/sites-available/default
+```
+Modify `/etc/nginx/sites-available/default`. Replace the entire default server settings with the settings specified below. Replace the server address with your ec2 ipv4 address, for example, mine is `ec2-3-84-249-197.compute-1.amazonaws.com`. Save and exit.
 ```
 server {
   listen 80;
-  server_name ec2-3-84-249-197.compute-1.amazonaws.com;
+  server_name <Your EC2 IPV4 ADDRESS>;
   location / {
     proxy_pass http://localhost:8080;
   }
   location /api/ {
     proxy_pass http://localhost:5000/api/;
   }
-  location /uplouds/ {
+  location /uploads/ {
     proxy_pass http://localhost:5000/uploads/;
   }
 }
 
+```
+
+Restart the nginx server.
+```
+$ sudo systemctl restart nginx
 ```
 ## Reference
 - https://testdriven.io/blog/developing-a-single-page-app-with-flask-and-vuejs/#flask-setup
