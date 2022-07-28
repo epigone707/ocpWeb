@@ -12,7 +12,7 @@ import os, sys
 sys.path.append("/home/litianyi/ocp")
 
 # TODO
-from ve450_predict import model_predict
+# from ve450_predict import model_predict
 
 # for testing
 BOOKS = [
@@ -53,12 +53,12 @@ CORS(app)
 
 
 # sanity check route
-@app.route('/ping', methods=['GET'])
+@app.route('/api/ping', methods=['GET'])
 def ping_pong():
     return jsonify('pong!')
 
 # for testing
-@app.route('/books', methods=['GET', 'POST'])
+@app.route('/api/books', methods=['GET', 'POST'])
 def all_books():
     response_object = {'status': 'success'}
     if request.method == 'POST':
@@ -83,7 +83,7 @@ def send_files(path):
     print("send file!")
     return send_from_directory('uploads', path)
 
-@app.route('/predict', methods=['GET', 'POST'])
+@app.route('/api/predict', methods=['GET', 'POST'])
 def predict():
     if request.method == 'POST':
         if 'cif_file' not in request.files:
