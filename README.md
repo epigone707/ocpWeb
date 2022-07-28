@@ -62,5 +62,7 @@ Restart the nginx server.
 ```
 $ sudo systemctl restart nginx
 ```
+
+Run the flask app to start the server. Go to `http://ec2-3-84-249-197.compute-1.amazonaws.com/api/ping`, you should see: "pong!".
 ## Reference
 - https://testdriven.io/blog/developing-a-single-page-app-with-flask-and-vuejs/#flask-setup
