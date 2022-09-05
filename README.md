@@ -1,5 +1,5 @@
 # ocpWeb
-A web UI of our ocp ML model
+A web UI of our [ocp](https://opencatalystproject.org/) ML model. 
 
 ## Demo
 [youtube](https://youtu.be/cTEBqxBpRRM)
