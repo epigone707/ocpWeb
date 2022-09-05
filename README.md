@@ -1,6 +1,9 @@
 # ocpWeb
 A web UI of our ocp ML model
 
+## Demo
+[youtube](https://youtu.be/cTEBqxBpRRM)
+
 ## Installation
 Create and activate a virtual environment:
 ```
